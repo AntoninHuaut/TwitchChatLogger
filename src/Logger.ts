@@ -2,7 +2,7 @@ import * as pino from 'pino'
 
 export default class Logger {
 
-    public static logEnable: boolean = false
+    private static logEnable: boolean = false
 
     private static fileLogger = pino.pino({
         prettyPrint: {

@@ -26,7 +26,8 @@ export default class IRCClient {
 
         let channels: string[] = []
 
-        for (const entry of Object.entries(config.channels)) {
+        for (let entry of Object.entries(config.channels)) {
+            entry[1] = entry[1].map((channelName: string) => channelName.toLowerCase())
             console.info(` -> Loading ${entry[0]} with ${entry[1].length} channel(s)`)
             channels = channels.concat(channels, entry[1])
         }
