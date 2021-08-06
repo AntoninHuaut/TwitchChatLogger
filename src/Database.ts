@@ -39,6 +39,30 @@ export default class Database {
     // @formatter:on
 
     // @formatter:off
+    public static async getUserMessage(search: string, offset: number, limit: number) {
+        const client: Connection = await this.getConnection()
+
+        const [rows, fields] = await client.execute(`SELECT * FROM ${Database.MESSAGE_TABLE} 
+        WHERE userName LIKE ? OR userId = ? OR userMessage LIKE ?
+        ORDER BY id LIMIT ?,?`, ['%'+search+'%', search, '%'+search+'%', offset, limit])
+
+        await client.end()
+        return [rows, fields]
+    }
+    // @formatter:on
+
+    // @formatter:off
+    public static async getTotalUserMessage(): Promise<number> {
+        const client: Connection = await this.getConnection()
+
+        const [rows] = await client.execute(`SELECT COUNT(*) as countUserMsg FROM ${Database.MESSAGE_TABLE}`)
+
+        await client.end()
+        return rows[0]['countUserMsg']
+    }
+    // @formatter:on
+
+    // @formatter:off
     public static async insertUserMessage(channelName: string, channelId: string, userName: string, userId: string, messageText: string) {
         const client: Connection = await this.getConnection()
 
